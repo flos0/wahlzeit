@@ -117,6 +117,8 @@ public class Photo extends DataObject {
 	 */
 	protected long creationTime = System.currentTimeMillis();
 	
+	protected Location location;
+	
 	/**
 	 * The default type is jpg
 	 */
@@ -395,6 +397,13 @@ public class Photo extends DataObject {
 		return creationTime;
 	}
 
+	public Location getLocation() {
+		return location;
+	}
+	
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
 	public String getEnding() {
 		return ending;
