@@ -25,6 +25,9 @@ public class Coordinate {
 	}
 
 	public double getDistance(Coordinate other) {
+		if (other == null) {
+			return Double.NaN;
+		}
 		double xdif = this.x-other.x;
 		double xsqr = xdif*xdif;
 		double ydif = this.y-other.y;
@@ -35,9 +38,6 @@ public class Coordinate {
 	}
 	
 	public boolean isEqual(Coordinate other) {
-		if (other == null) {
-			return false;
-		}
 		return this.getDistance(other) < epsilon;
 	}
 	

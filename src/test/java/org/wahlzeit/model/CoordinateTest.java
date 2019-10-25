@@ -31,6 +31,8 @@ public class CoordinateTest {
 		assertTrue(co1.getDistance(co2) == 1);
 		assertTrue(co2.getDistance(co1) == 1);
 		assertTrue(co2.getDistance(co0) == 2);
+		assertTrue(Double.isNaN(co0.getDistance(null)));
+		assertTrue(Double.isNaN(co1.getDistance(null)));
 		
 		Coordinate co3 = new Coordinate(0, 3, 4);
 		assertTrue(co3.getDistance(co0) == 5);
