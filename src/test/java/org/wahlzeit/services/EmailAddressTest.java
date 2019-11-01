@@ -20,6 +20,8 @@
 
 package org.wahlzeit.services;
 
+import org.junit.Assert;
+
 import junit.framework.TestCase;
 
 /**
@@ -65,6 +67,70 @@ public class EmailAddressTest extends TestCase {
 	public void testEmptyEmailAddress() {
 		assertFalse(EmailAddress.EMPTY.isValid());
 	}
-
+	
+	
+	/**
+	 *
+	 */
+	public void testIsEmpty() {
+		assertTrue(EmailAddress.EMPTY.isEmpty());
+		assertFalse(EmailAddress.getFromString("bingo@bongo.de").isEmpty());
+	}
+	
+	
+	/**
+	 *
+	 */
+	public void testIsEqual() {
+		EmailAddress ea = EmailAddress.getFromString("bingo@bongo.de");
+		EmailAddress ea2 = EmailAddress.getFromString("bingo@bongo.com");
+		assertTrue(EmailAddress.EMPTY.isEqual(EmailAddress.EMPTY));
+		assertTrue(EmailAddress.EMPTY == EmailAddress.getFromString(""));
+		assertTrue(EmailAddress.getFromString("bingo@bongo.de").isEqual(ea));
+		assertTrue(ea.isEqual(EmailAddress.getFromString("bingo@bongo.de")));
+		assertTrue(ea.isEqual(ea));
+		
+		assertFalse(ea.isEqual(ea2));
+		assertFalse(ea2.isEqual(ea));
+		assertFalse(ea2.isEqual(EmailAddress.EMPTY));
+	}
+	
+	/**
+	 *
+	 */
+	public void testAsString() {
+		EmailAddress ea = EmailAddress.getFromString("bingo@bongo.de");
+		EmailAddress ea2 = EmailAddress.getFromString("bingo@bongo.com");
+		assertTrue(EmailAddress.EMPTY.asString() == "");
+		assertTrue(ea.asString() == "bingo@bongo.de");
+		assertTrue(ea2.asString() == "bingo@bongo.com");
+	}
+	
+	/**
+	 *
+	 */
+	public void testInternetAdress() {
+		EmailAddress ea = EmailAddress.getFromString("bingo@bongo.de");
+		EmailAddress ea2 = EmailAddress.getFromString("bingo@bongo.com");
+		try {
+			EmailAddress.EMPTY.asInternetAddress();
+			ea.asInternetAddress();
+			ea2.asInternetAddress();
+		} catch (Exception ex) {
+			Assert.fail();
+		}
+	}
+	
+	/**
+	 *
+	 */
+	public void testIsValid() {
+		EmailAddress ea = EmailAddress.getFromString("bingo@bongo.de");
+		EmailAddress ea2 = EmailAddress.getFromString("@");
+		EmailAddress em = EmailAddress.getFromString("");
+		assertTrue(ea.isValid());
+		assertTrue(ea2.isValid());
+		assertFalse(em.isValid());
+	}
 }
 
