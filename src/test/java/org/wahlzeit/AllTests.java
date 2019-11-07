@@ -21,7 +21,7 @@ import org.wahlzeit.utils.*;
 
 @RunWith(Suite.class)
 @SuiteClasses({ AccessRightsTest.class, CoordinateTest.class, FlagReasonTest.class, GenderTest.class, GuestTest.class,
-		PhotoFilterTest.class, TagsTest.class, UserStatusTest.class, ValueTest.class, TellFriendTest.class,
+		PhotoFilterTest.class, TagsTest.class, UserStatusTest.class, ValueTest.class, TellFriendTest.class, AnimalPhotoManagerTest.class,
 		DatastoreAdapterTest.class, EmailService.class, LogBuilderTest.class, StringUtilTest.class, VersionTest.class})
 
 public class AllTests {

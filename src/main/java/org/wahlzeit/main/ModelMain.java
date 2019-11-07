@@ -22,6 +22,9 @@ package org.wahlzeit.main;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
+
+import org.wahlzeit.model.AnimalPhotoFactory;
+import org.wahlzeit.model.AnimalPhotoManager;
 import org.wahlzeit.model.GlobalsManager;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCaseManager;
@@ -66,6 +69,9 @@ public abstract class ModelMain extends AbstractMain {
 
 		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
 		PhotoFactory.initialize();
+		
+		log.config(LogBuilder.createSystemMessage().addAction("init AnimalPhotoFactory").toString());
+		AnimalPhotoFactory.initialize();
 
 		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
 		PhotoManager.getInstance().init();
@@ -87,6 +93,7 @@ public abstract class ModelMain extends AbstractMain {
 	public void saveAll() throws IOException{
 		PhotoCaseManager.getInstance().savePhotoCases();
 		PhotoManager.getInstance().savePhotos();
+		AnimalPhotoManager.getInstance().savePhotos();
 		UserManager.getInstance().saveClients();
 		GlobalsManager.getInstance().saveGlobals();
 	}
