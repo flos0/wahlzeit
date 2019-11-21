@@ -3,14 +3,14 @@
  *
  * Version: 1.0
  *
- * Date 13.11.19
+ * Date 21.11.19
  * 
  * Copyright: AGPL-3.0
  */
 
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate{
+public class CartesianCoordinate extends AbstractCoordinate {
 	public static final double epsilon = 0.0001;
 	
 	private double x;
@@ -50,16 +50,6 @@ public class CartesianCoordinate implements Coordinate{
 	}
 
 	/**
-	 * @methodtype comparison
-	 */
-	@Override
-	public boolean equals(Object other) {
-		if (other instanceof Coordinate)
-			return isEqual((Coordinate) other);
-		return false;
-	}
-
-	/**
 	 * @methodtype get
 	 */
 	@Override
@@ -74,14 +64,6 @@ public class CartesianCoordinate implements Coordinate{
 		temp = Double.doubleToLongBits(z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
-	}
-
-	/**
-	 * @methodtype get
-	 */
-	@Override
-	public double getCentralAngle(Coordinate other) {
-		return this.asSphericCoordinate().getCentralAngle(other);
 	}
 
 	/**

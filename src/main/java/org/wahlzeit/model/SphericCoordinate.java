@@ -3,13 +3,14 @@
  *
  * Version: 1.0
  *
- * Date 13.11.19
+ * Date 21.11.19
  * 
  * Copyright: AGPL-3.0
  */
+
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 	private double phi;   //latitude(south-nord direction) in radians
 	private double theta; //longitude(west-east direction) in radians 
 	private double radius;
@@ -50,43 +51,10 @@ public class SphericCoordinate implements Coordinate {
 	}
 
 	/**
-	 * @methodtype get
-	 */
-	@Override
-	public double getCartesianDistance(Coordinate other) {
-		return this.asCartesianCoordinate().getCartesianDistance(other);
-	}
-	
-	/**
 	 * @methodtype conversion
 	 */
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
 	}
-
-	/**
-	 * @methodtype comparison
-	 */
-	@Override
-	public boolean isEqual(Coordinate other) {
-		return this.asCartesianCoordinate().isEqual(other);
-	}
-	
-	/**
-	 * @methodtype comparison
-	 */
-	@Override
-	public boolean equals(Object other) {
-		return this.asCartesianCoordinate().equals(other);
-	}
-
-	/**
-	 * @methodtype get
-	 */
-	@Override
-	public int hashCode() {
-		return this.asCartesianCoordinate().hashCode();
-	}
-
 }
