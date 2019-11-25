@@ -16,6 +16,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	private double radius;
 	
 	public SphericCoordinate(double phi, double theta, double radius) {
+		assertValidParam(phi, theta, radius);
 		this.phi = phi;
 		this.theta = theta;
 		this.radius = radius;
@@ -25,11 +26,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype get
 	 */
 	@Override
-	public double getCentralAngle(Coordinate other) {
-		if (other == null) {
-			return Double.NaN;
-		}
-		SphericCoordinate sCoord = other.asSphericCoordinate();
+	public double doGetCentralAngle(SphericCoordinate sCoord) {
 		double phiDif = Math.abs(this.phi-sCoord.phi);
 		double thetaDif = Math.abs(this.phi-sCoord.phi);
 		
@@ -40,10 +37,40 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
+	 * @methodtype assert
+	 */
+	protected void assertClassInvariants() {
+		if (!validSphere(this.phi, this.theta, this.radius)) {
+			 throw new IllegalStateException();
+		 }
+	}
+	/**
+	 * @methodtype assert
+	 */
+	protected void assertValidParam(Double phi, Double theta, Double radius) {
+		if (!validSphere(phi, theta, radius)) {
+			 throw new IllegalArgumentException();
+		 }
+	}
+	/**
+	 * @methodtype helper
+	 */
+	protected boolean validSphere(Double phi, Double theta, Double radius) {
+		 return (validAngle(phi, 2) && validAngle(theta, 1) && radius >= 0 );
+	}
+	
+	/**
+	 * @methodtype helper
+	 */
+	protected boolean validAngle(Double d, int factor) {
+		 return d >= -Math.PI/factor && d <= Math.PI/factor;
+	}
+	
+	/**
 	 * @methodtype conversion
 	 */
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate doConvertToCartesianCoordinate() {
 		double x = this.radius*Math.cos(this.phi)*Math.sin(this.theta);
 		double y = this.radius*Math.cos(this.phi)*Math.cos(this.theta);
 		double z = this.radius*Math.sin(this.phi);
@@ -54,7 +81,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate doConvertToSphericCoordinate() {
 		return this;
 	}
 }

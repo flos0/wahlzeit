@@ -35,8 +35,6 @@ public class CoordinateTest {
 		assertTrue(co2.getCartesianDistance(co0) == 2);
 		assertTrue(co3.getCartesianDistance(co0) == 5);
 		assertTrue(co2.getCartesianDistance(co3) == Math.sqrt(29));
-		assertTrue(Double.isNaN(co0.getCartesianDistance(null)));
-		assertTrue(Double.isNaN(co1.getCartesianDistance(null)));
 	}
 	
 	@Test
@@ -59,8 +57,6 @@ public class CoordinateTest {
 		assertFalse(coc.isEqual(coa));
 		assertFalse(coa.isEqual(coc));
 		assertFalse(coc.isEqual(cob));
-		assertFalse(coc.isEqual(null));
-		assertFalse(coa.isEqual(null));
 		assertFalse(cod.isEqual(coe));
 	}
 	
@@ -84,8 +80,6 @@ public class CoordinateTest {
 		assertFalse(coc.equals(coa));
 		assertFalse(coa.equals(coc));
 		assertFalse(coc.equals(cob));
-		assertFalse(coc.equals(null));
-		assertFalse(coa.equals(null));
 		assertFalse(cod.equals(coe));
 		
 		assertFalse(coa.equals("banane"));
@@ -106,8 +100,6 @@ public class CoordinateTest {
 		assertEquals(co1.getCentralAngle(co2), 0, delta);
 		assertEquals(co2.getCentralAngle(co0), Math.PI/2, delta);
 		assertEquals(co0.getCentralAngle(co0), 0, delta);
-		assertTrue(Double.isNaN(co0.getCentralAngle(null)));
-		assertTrue(Double.isNaN(co1.getCentralAngle(null)));
 	}
 	
 	@Test
@@ -128,8 +120,6 @@ public class CoordinateTest {
 		assertFalse(coc.isEqual(coa));
 		assertFalse(coa.isEqual(coc));
 		assertFalse(coc.isEqual(cob));
-		assertFalse(coc.isEqual(null));
-		assertFalse(coa.isEqual(null));
 	}
 	
 	@Test
@@ -150,8 +140,6 @@ public class CoordinateTest {
 		assertFalse(coc.equals(coa));
 		assertFalse(coa.equals(coc));
 		assertFalse(coc.equals(cob));
-		assertFalse(coc.equals(null));
-		assertFalse(coa.equals(null));
 		
 		assertFalse(coa.equals("banane"));
 		assertFalse(cob.equals(1337));
@@ -160,7 +148,7 @@ public class CoordinateTest {
 	
 	@Test
 	public void testEqualAfterConversion() {
-		Coordinate coS = new SphericCoordinate(1, 2.2, 3);
+		Coordinate coS = new SphericCoordinate(1, -2.2, 3);
 		Coordinate coC = new CartesianCoordinate(4.4, 5, 6);
 		Coordinate coS2 = coS.asCartesianCoordinate();
 		Coordinate coC2 = coC.asSphericCoordinate();
@@ -174,5 +162,36 @@ public class CoordinateTest {
 		assertTrue(coC.equals(coC2));
 		assertTrue(coC.equals(coC3));
 		assertTrue(coC3.equals(coC2));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionNegativeRadius() throws Exception {
+		new SphericCoordinate(1, 1, -3);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionAngleOutOfRange() throws Exception {
+		new SphericCoordinate(-2, 2, 3);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionNaNAngleParam() throws Exception {
+		new SphericCoordinate(Double.NaN, 2, 3);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionNaNAxisParam() throws Exception {
+		new CartesianCoordinate(Double.NaN, 2, 3);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionInfiniteParam() throws Exception {
+		new CartesianCoordinate(5, 6, Double.POSITIVE_INFINITY);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionNullParam() throws Exception {
+		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
+		co.getCartesianDistance(null);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testExeptionNullParam2() throws Exception {
+		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
+		co.getCentralAngle(null);
 	}
 }

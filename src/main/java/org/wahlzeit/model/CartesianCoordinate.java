@@ -18,6 +18,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	private double z;
 	
 	public CartesianCoordinate(double x, double y, double z) {
+		assertValidParam(x);
+		assertValidParam(y);
+		assertValidParam(z);
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -27,11 +30,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @methodtype get
 	 */
 	@Override
-	public double getCartesianDistance(Coordinate other) {
-		if (other == null) {
-			return Double.NaN;
-		}
-		CartesianCoordinate cCoord = other.asCartesianCoordinate();
+	public double doGetCartesianDistance(CartesianCoordinate cCoord ) {
 		double xdif = this.x-cCoord.x;
 		double xsqr = xdif*xdif;
 		double ydif = this.y-cCoord.y;
@@ -41,6 +40,24 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return Math.sqrt(xsqr + ysqr + zsqr);
 	}
 
+	/**
+	 * @methodtype assert
+	 */
+	protected void assertClassInvariants() {
+		 if (!Double.isFinite(this.x) || !Double.isFinite(this.y) || !Double.isFinite(this.z)) {
+			 throw new IllegalStateException();
+		 }
+	}
+	
+	/**
+	 * @methodtype assert
+	 */
+	protected void assertValidParam(Double d) {
+		 if (!Double.isFinite(d)) {
+			 throw new IllegalArgumentException();
+		 }
+	}
+	
 	/**
 	 * @methodtype comparison
 	 */
@@ -70,7 +87,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate doConvertToCartesianCoordinate() {
 		return this;
 	}
 
@@ -78,7 +95,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate doConvertToSphericCoordinate() {
 		double r = this.getCartesianDistance(new CartesianCoordinate(0,0,0));
 		if (r==0) return new SphericCoordinate(0,0,0);
 		double l = Math.atan2(x,y);
