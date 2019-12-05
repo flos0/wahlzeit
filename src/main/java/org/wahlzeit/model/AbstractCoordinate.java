@@ -15,12 +15,21 @@ public abstract class AbstractCoordinate implements Coordinate{
 	/**
 	 * @methodtype get
 	 */
-	public double getCartesianDistance(Coordinate other) {
+	public double getCartesianDistance(Coordinate other) throws CoordinateException {
 		assertClassInvariants();
 		assertIsArgumentValid(other);
 		CartesianCoordinate caCo = other.asCartesianCoordinate();
-		Double res = this.doGetCartesianDistance(caCo);
-		assert(res >= 0);
+		Double res;
+		try {
+			res = this.doGetCartesianDistance(caCo);
+		} catch (Exception e) {
+			throw new CoordinateException("Unexpected error during calculation", e, this);
+		}
+		try {
+			assert(res >= 0) : "Distance has to be positive";
+		} catch (AssertionError e) {
+			throw new CoordinateException(e, this);
+		}
 		assertClassInvariants();
 		return res;
 	}
@@ -28,19 +37,28 @@ public abstract class AbstractCoordinate implements Coordinate{
 	 * @methodtype get
 	 * @methodproperties primitive
 	 */
-	protected double doGetCartesianDistance(CartesianCoordinate other) {
+	protected double doGetCartesianDistance(CartesianCoordinate other) throws CoordinateException {
 		return this.asCartesianCoordinate().doGetCartesianDistance(other);
 	}
 	
 	/**
 	 * @methodtype get
 	 */
-	public double getCentralAngle(Coordinate other) {
+	public double getCentralAngle(Coordinate other) throws CoordinateException {
 		assertClassInvariants();
 		assertIsArgumentValid(other);
 		SphericCoordinate spCo = other.asSphericCoordinate();
-		Double res = this.doGetCentralAngle(spCo);
-		assert(res >= 0 && res < 2*Math.PI);
+		Double res;
+		try {
+			res = this.doGetCentralAngle(spCo);
+		} catch (Exception e) {
+			throw new CoordinateException("Unexpected error during calculation", e, this);
+		}
+		try {
+			assert(res >= 0 && res < 2*Math.PI) : "Angle not in the valid range";
+		} catch (AssertionError e) {
+			throw new CoordinateException(e, this);
+		}
 		assertClassInvariants();
 		return res;
 	}
@@ -48,7 +66,7 @@ public abstract class AbstractCoordinate implements Coordinate{
 	 * @methodtype get
 	 * @methodproperties primitive
 	 */
-	protected double doGetCentralAngle(SphericCoordinate other) {
+	protected double doGetCentralAngle(SphericCoordinate other) throws CoordinateException {
 		return this.asSphericCoordinate().doGetCentralAngle(other);
 	}
 	
@@ -56,14 +74,14 @@ public abstract class AbstractCoordinate implements Coordinate{
 	 * @methodtype assert
 	 * @methodproperties hook
 	 */
-	protected abstract void assertClassInvariants();
+	protected abstract void assertClassInvariants() throws CoordinateException;
 	
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertIsArgumentValid(Coordinate other) {
+	protected void assertIsArgumentValid(Coordinate other) throws CoordinateException {
 		if (other == null) {
-			throw new IllegalArgumentException();
+			throw new CoordinateException("Null is not a valid argument for Coordinate", this);
 		}
 		//other could be from a different class than AbstractCoordiant but we allow it?
 		//assertClassInvariants();
@@ -72,9 +90,14 @@ public abstract class AbstractCoordinate implements Coordinate{
 	/**
 	 * @methodtype conversion
 	 */
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
 		assertClassInvariants();
-		CartesianCoordinate caCo = this.doConvertToCartesianCoordinate();
+		CartesianCoordinate caCo;
+		try {
+			caCo = this.doConvertToCartesianCoordinate();
+		} catch (Exception e) {
+			throw new CoordinateException("Unexpected error during calculation", e, this);
+		}
 		caCo.assertClassInvariants();
 		assertClassInvariants();
 		return caCo;
@@ -83,14 +106,19 @@ public abstract class AbstractCoordinate implements Coordinate{
 	 * @methodtype conversion
 	 * @methodproperties primitive
 	 */
-	protected abstract CartesianCoordinate doConvertToCartesianCoordinate();
+	protected abstract CartesianCoordinate doConvertToCartesianCoordinate() throws CoordinateException;
 	
 	/**
 	 * @methodtype conversion
 	 */
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws CoordinateException {
 		assertClassInvariants();
-		SphericCoordinate spCo = this.doConvertToSphericCoordinate();
+		SphericCoordinate spCo;
+		try {
+			spCo = this.doConvertToSphericCoordinate();
+		} catch (Exception e) {
+			throw new CoordinateException("Unexpected error during calculation", e, this);
+		}
 		spCo.assertClassInvariants();
 		assertClassInvariants();
 		return spCo;
@@ -99,29 +127,38 @@ public abstract class AbstractCoordinate implements Coordinate{
 	 * @methodtype conversion
 	 * @methodproperties primitive
 	 */
-	protected abstract SphericCoordinate doConvertToSphericCoordinate();
+	protected abstract SphericCoordinate doConvertToSphericCoordinate() throws CoordinateException;
 	
 	/**
 	 * @methodtype comparison
 	 */
 	public boolean equals(Object other) {
 		if (other instanceof Coordinate)
-			return isEqual((Coordinate) other);
+			try {
+				return isEqual((Coordinate) other);
+			} catch (CoordinateException e) {
+				//If comparison has an error the object shouldn't be seen as equal
+			}
 		return false;
 	}
 	
 	/**
 	 * @methodtype comparison
 	 */
-	public boolean isEqual(Coordinate other) {
-		return this.asCartesianCoordinate().isEqual(other);
+	public boolean isEqual(Coordinate other) throws CoordinateException {
+		return this.doConvertToCartesianCoordinate().isEqual(other);
 	}
 
 	/**
 	 * @methodtype get
 	 */
 	public int hashCode() {
-		return this.asCartesianCoordinate().hashCode();
+		try {
+			return this.asCartesianCoordinate().hashCode();
+		} catch (CoordinateException e) {
+			//Something failsafe and mostly unique
+			return (int) (Math.random()*Integer.MIN_VALUE);
+		}
 	}
 
 }

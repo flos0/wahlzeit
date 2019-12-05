@@ -17,7 +17,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	private double y;
 	private double z;
 	
-	public CartesianCoordinate(double x, double y, double z) {
+	public CartesianCoordinate(double x, double y, double z) throws CoordinateException {
 		assertValidParam(x);
 		assertValidParam(y);
 		assertValidParam(z);
@@ -43,18 +43,18 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertClassInvariants() {
+	protected void assertClassInvariants() throws CoordinateException {
 		 if (!Double.isFinite(this.x) || !Double.isFinite(this.y) || !Double.isFinite(this.z)) {
-			 throw new IllegalStateException();
+			 throw new CoordinateException("Class invariant violated", this);
 		 }
 	}
 	
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertValidParam(Double d) {
+	protected void assertValidParam(Double d) throws CoordinateException {
 		 if (!Double.isFinite(d)) {
-			 throw new IllegalArgumentException();
+			 throw new CoordinateException("Parameters value out of range", this);
 		 }
 	}
 	
@@ -62,7 +62,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @methodtype comparison
 	 */
 	@Override
-	public boolean isEqual(Coordinate other) {
+	public boolean isEqual(Coordinate other) throws CoordinateException {
 		return this.getCartesianDistance(other) < epsilon;
 	}
 
@@ -95,8 +95,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	@Override
-	public SphericCoordinate doConvertToSphericCoordinate() {
-		double r = this.getCartesianDistance(new CartesianCoordinate(0,0,0));
+	public SphericCoordinate doConvertToSphericCoordinate() throws CoordinateException {
+		double r = this.doGetCartesianDistance(new CartesianCoordinate(0,0,0));
 		if (r==0) return new SphericCoordinate(0,0,0);
 		double l = Math.atan2(x,y);
 		double h = Math.asin(z/r);

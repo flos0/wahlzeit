@@ -22,12 +22,12 @@ public class CoordinateTest {
 	 *
 	 */
 	@Test
-	public void testCartesianDistance() {
+	public void testCartesianDistance() throws CoordinateException {
 		Coordinate co0 = new CartesianCoordinate(0, 0, 0);
 		Coordinate co1 = new CartesianCoordinate(1, 0, 0);
 		Coordinate co2 = new CartesianCoordinate(2, 0, 0);
 		Coordinate co3 = new CartesianCoordinate(0, 3, 4);
-		
+
 		assertTrue(co0.getCartesianDistance(co1) == 1);
 		assertTrue(co1.getCartesianDistance(co0) == 1);
 		assertTrue(co1.getCartesianDistance(co2) == 1);
@@ -38,7 +38,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testIsEqualCartesian() {
+	public void testIsEqualCartesian() throws CoordinateException {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
@@ -61,7 +61,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testEqualsCartesian() {
+	public void testEqualsCartesian() throws CoordinateException {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
@@ -89,7 +89,7 @@ public class CoordinateTest {
 	}
 
 	@Test
-	public void testCentralAngle() {
+	public void testCentralAngle() throws CoordinateException {
 		double delta = 0.0001;
 		Coordinate co0 = new SphericCoordinate(Math.PI/2, 0, 10);
 		Coordinate co1 = new SphericCoordinate(0, 0, 0);
@@ -103,7 +103,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testIsEqualSpheric() {
+	public void testIsEqualSpheric() throws CoordinateException {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
@@ -123,7 +123,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testEqualsSpheric() {
+	public void testEqualsSpheric() throws CoordinateException {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
@@ -144,10 +144,11 @@ public class CoordinateTest {
 		assertFalse(coa.equals("banane"));
 		assertFalse(cob.equals(1337));
 		assertFalse(coc.equals(this));
+		assertFalse(coc.equals(null));
 	}
 	
 	@Test
-	public void testEqualAfterConversion() {
+	public void testEqualAfterConversion() throws CoordinateException {
 		Coordinate coS = new SphericCoordinate(1, -2.2, 3);
 		Coordinate coC = new CartesianCoordinate(4.4, 5, 6);
 		Coordinate coS2 = coS.asCartesianCoordinate();
@@ -164,33 +165,33 @@ public class CoordinateTest {
 		assertTrue(coC3.equals(coC2));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionNegativeRadius() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionNegativeRadius() throws CoordinateException {
 		new SphericCoordinate(1, 1, -3);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionAngleOutOfRange() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionAngleOutOfRange() throws CoordinateException {
 		new SphericCoordinate(-2, 2, 3);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionNaNAngleParam() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionNaNAngleParam() throws CoordinateException {
 		new SphericCoordinate(Double.NaN, 2, 3);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionNaNAxisParam() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionNaNAxisParam() throws CoordinateException {
 		new CartesianCoordinate(Double.NaN, 2, 3);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionInfiniteParam() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionInfiniteParam() throws CoordinateException {
 		new CartesianCoordinate(5, 6, Double.POSITIVE_INFINITY);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionNullParam() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionNullParam() throws CoordinateException {
 		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
 		co.getCartesianDistance(null);
 	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testExeptionNullParam2() throws Exception {
+	@Test(expected = CoordinateException.class)
+	public void testExeptionNullParam2() throws CoordinateException {
 		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
 		co.getCentralAngle(null);
 	}

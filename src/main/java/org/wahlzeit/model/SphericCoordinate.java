@@ -15,7 +15,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	private double theta; //longitude(west-east direction) in radians 
 	private double radius;
 	
-	public SphericCoordinate(double phi, double theta, double radius) {
+	public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
 		assertValidParam(phi, theta, radius);
 		this.phi = phi;
 		this.theta = theta;
@@ -39,17 +39,17 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertClassInvariants() {
+	protected void assertClassInvariants() throws CoordinateException {
 		if (!validSphere(this.phi, this.theta, this.radius)) {
-			 throw new IllegalStateException();
+			 throw new CoordinateException("Class invariant violated", this);
 		 }
 	}
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertValidParam(Double phi, Double theta, Double radius) {
+	protected void assertValidParam(Double phi, Double theta, Double radius) throws CoordinateException {
 		if (!validSphere(phi, theta, radius)) {
-			 throw new IllegalArgumentException();
+			 throw new CoordinateException("Parameters value out of range", this);
 		 }
 	}
 	/**
@@ -70,7 +70,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype conversion
 	 */
 	@Override
-	public CartesianCoordinate doConvertToCartesianCoordinate() {
+	public CartesianCoordinate doConvertToCartesianCoordinate() throws CoordinateException {
 		double x = this.radius*Math.cos(this.phi)*Math.sin(this.theta);
 		double y = this.radius*Math.cos(this.phi)*Math.cos(this.theta);
 		double z = this.radius*Math.sin(this.phi);
