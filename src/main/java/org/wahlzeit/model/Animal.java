@@ -20,6 +20,9 @@ public class Animal {
 	 *
 	 */
 	public Animal(String name, Type type) {
+		if (name == null) throw new IllegalArgumentException("Animal's name shouldn't be empty");
+		if (name == "")   throw new IllegalArgumentException("Animal's name shouldn't be empty");
+		if (type == null) throw new IllegalArgumentException("Animal needs a type");
 		this.name = name;
 		this.type = type;
 	}
