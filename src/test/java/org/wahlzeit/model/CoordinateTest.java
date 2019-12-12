@@ -12,6 +12,8 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 
+import com.google.apphosting.utils.config.AppEngineWebXml.CpuUtilization;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,10 +25,10 @@ public class CoordinateTest {
 	 */
 	@Test
 	public void testCartesianDistance() throws CoordinateException {
-		Coordinate co0 = new CartesianCoordinate(0, 0, 0);
-		Coordinate co1 = new CartesianCoordinate(1, 0, 0);
-		Coordinate co2 = new CartesianCoordinate(2, 0, 0);
-		Coordinate co3 = new CartesianCoordinate(0, 3, 4);
+		Coordinate co0 = CartesianCoordinate.getCartesianCoordinate(0, 0, 0);
+		Coordinate co1 = CartesianCoordinate.getCartesianCoordinate(1, 0, 0);
+		Coordinate co2 = CartesianCoordinate.getCartesianCoordinate(2, 0, 0);
+		Coordinate co3 = CartesianCoordinate.getCartesianCoordinate(0, 3, 4);
 
 		assertTrue(co0.getCartesianDistance(co1) == 1);
 		assertTrue(co1.getCartesianDistance(co0) == 1);
@@ -42,11 +44,11 @@ public class CoordinateTest {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
-		Coordinate coa = new CartesianCoordinate(a, a, a);
-		Coordinate cob = new CartesianCoordinate(b, b, b);
-		Coordinate coc = new CartesianCoordinate(c, c, c);
-		Coordinate cod = new CartesianCoordinate(a, b, c);
-		Coordinate coe = new CartesianCoordinate(c, b, a);
+		Coordinate coa = CartesianCoordinate.getCartesianCoordinate(a, a, a);
+		Coordinate cob = CartesianCoordinate.getCartesianCoordinate(b, b, b);
+		Coordinate coc = CartesianCoordinate.getCartesianCoordinate(c, c, c);
+		Coordinate cod = CartesianCoordinate.getCartesianCoordinate(a, b, c);
+		Coordinate coe = CartesianCoordinate.getCartesianCoordinate(c, b, a);
 		
 		assertTrue(coa.isEqual(coa));
 		assertTrue(cob.isEqual(cob));
@@ -65,11 +67,11 @@ public class CoordinateTest {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
-		Coordinate coa = new CartesianCoordinate(a, a, a);
-		Coordinate cob = new CartesianCoordinate(b, b, b);
-		Coordinate coc = new CartesianCoordinate(c, c, c);
-		Coordinate cod = new CartesianCoordinate(a, b, c);
-		Coordinate coe = new CartesianCoordinate(c, b, a);
+		Coordinate coa = CartesianCoordinate.getCartesianCoordinate(a, a, a);
+		Coordinate cob = CartesianCoordinate.getCartesianCoordinate(b, b, b);
+		Coordinate coc = CartesianCoordinate.getCartesianCoordinate(c, c, c);
+		Coordinate cod = CartesianCoordinate.getCartesianCoordinate(a, b, c);
+		Coordinate coe = CartesianCoordinate.getCartesianCoordinate(c, b, a);
 		
 		assertTrue(coa.equals(coa));
 		assertTrue(cob.equals(cob));
@@ -91,9 +93,9 @@ public class CoordinateTest {
 	@Test
 	public void testCentralAngle() throws CoordinateException {
 		double delta = 0.0001;
-		Coordinate co0 = new SphericCoordinate(Math.PI/2, 0, 10);
-		Coordinate co1 = new SphericCoordinate(0, 0, 0);
-		Coordinate co2 = new SphericCoordinate(0, -Math.PI/2, 1);
+		Coordinate co0 = SphericCoordinate.getSphericCoordinate(Math.PI/2, 0, 10);
+		Coordinate co1 = SphericCoordinate.getSphericCoordinate(0, 0, 0);
+		Coordinate co2 = SphericCoordinate.getSphericCoordinate(0, -Math.PI/2, 1);
 		
 		assertEquals(co0.getCentralAngle(co1), Math.PI/2, delta);
 		assertEquals(co1.getCentralAngle(co0), Math.PI/2, delta);
@@ -107,9 +109,9 @@ public class CoordinateTest {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
-		Coordinate coa = new SphericCoordinate(a, a, a);
-		Coordinate cob = new SphericCoordinate(b, b, b);
-		Coordinate coc = new SphericCoordinate(c, c, c);
+		Coordinate coa = SphericCoordinate.getSphericCoordinate(a, a, a);
+		Coordinate cob = SphericCoordinate.getSphericCoordinate(b, b, b);
+		Coordinate coc = SphericCoordinate.getSphericCoordinate(c, c, c);
 		
 		assertTrue(coa.isEqual(coa));
 		assertTrue(cob.isEqual(cob));
@@ -127,9 +129,9 @@ public class CoordinateTest {
 		double a = 0.1;
 		double b = 0.1 + 1000 - 1000;
 		double c = 0.101;
-		Coordinate coa = new SphericCoordinate(a, a, a);
-		Coordinate cob = new SphericCoordinate(b, b, b);
-		Coordinate coc = new SphericCoordinate(c, c, c);
+		Coordinate coa = SphericCoordinate.getSphericCoordinate(a, a, a);
+		Coordinate cob = SphericCoordinate.getSphericCoordinate(b, b, b);
+		Coordinate coc = SphericCoordinate.getSphericCoordinate(c, c, c);
 		
 		assertTrue(coa.equals(coa));
 		assertTrue(cob.equals(cob));
@@ -149,8 +151,8 @@ public class CoordinateTest {
 	
 	@Test
 	public void testEqualAfterConversion() throws CoordinateException {
-		Coordinate coS = new SphericCoordinate(1, -2.2, 3);
-		Coordinate coC = new CartesianCoordinate(4.4, 5, 6);
+		Coordinate coS = SphericCoordinate.getSphericCoordinate(1, -2.2, 3);
+		Coordinate coC = CartesianCoordinate.getCartesianCoordinate(4.4, 5, 6);
 		Coordinate coS2 = coS.asCartesianCoordinate();
 		Coordinate coC2 = coC.asSphericCoordinate();
 		Coordinate coS3 = coS2.asSphericCoordinate();
@@ -167,32 +169,54 @@ public class CoordinateTest {
 	
 	@Test(expected = CoordinateException.class)
 	public void testExeptionNegativeRadius() throws CoordinateException {
-		new SphericCoordinate(1, 1, -3);
+		SphericCoordinate.getSphericCoordinate(1, 1, -3);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionAngleOutOfRange() throws CoordinateException {
-		new SphericCoordinate(-2, 2, 3);
+		SphericCoordinate.getSphericCoordinate(-2, 2, 3);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionNaNAngleParam() throws CoordinateException {
-		new SphericCoordinate(Double.NaN, 2, 3);
+		SphericCoordinate.getSphericCoordinate(Double.NaN, 2, 3);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionNaNAxisParam() throws CoordinateException {
-		new CartesianCoordinate(Double.NaN, 2, 3);
+		CartesianCoordinate.getCartesianCoordinate(Double.NaN, 2, 3);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionInfiniteParam() throws CoordinateException {
-		new CartesianCoordinate(5, 6, Double.POSITIVE_INFINITY);
+		CartesianCoordinate.getCartesianCoordinate(5, 6, Double.POSITIVE_INFINITY);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionNullParam() throws CoordinateException {
-		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
+		CartesianCoordinate co = CartesianCoordinate.getCartesianCoordinate(-55, 67, 4);
 		co.getCartesianDistance(null);
 	}
 	@Test(expected = CoordinateException.class)
 	public void testExeptionNullParam2() throws CoordinateException {
-		CartesianCoordinate co = new CartesianCoordinate(-55, 67, 4);
+		CartesianCoordinate co = CartesianCoordinate.getCartesianCoordinate(-55, 67, 4);
 		co.getCentralAngle(null);
+	}
+	
+	@Test
+	public void testObjectSharing() throws CoordinateException {
+		Coordinate coS1 = SphericCoordinate.getSphericCoordinate(1.1, -2.3, 2);
+		Coordinate coS2 = SphericCoordinate.getSphericCoordinate(1.1, -2.3, 2);
+		Coordinate coC1 = coS1.asCartesianCoordinate();
+		Coordinate coC2 = coS2.asCartesianCoordinate();
+		
+		assertTrue(coS1 == coS2);
+		assertTrue(coC1 == coC2);
+	}
+	
+	@Test
+	public void testDifferentObjectNotSharing() throws CoordinateException {
+		double a = 0.1;
+		double b = 0.1 + 1000 - 1000;
+		Coordinate coa = SphericCoordinate.getSphericCoordinate(a, a, a);
+		Coordinate cob = SphericCoordinate.getSphericCoordinate(b, b, b);
+		
+		assertTrue(coa != cob);
+		assertTrue(coa.isEqual(cob));
 	}
 }

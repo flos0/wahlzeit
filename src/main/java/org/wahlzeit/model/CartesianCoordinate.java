@@ -10,14 +10,17 @@
 
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 public class CartesianCoordinate extends AbstractCoordinate {
+	private static HashMap<String, CartesianCoordinate> allCaCo = new HashMap<String, CartesianCoordinate>();
 	public static final double epsilon = 0.0001;
 	
-	private double x;
-	private double y;
-	private double z;
+	private final double x;
+	private final double y;
+	private final double z;
 	
-	public CartesianCoordinate(double x, double y, double z) throws CoordinateException {
+	private CartesianCoordinate(double x, double y, double z) throws CoordinateException {
 		assertValidParam(x);
 		assertValidParam(y);
 		assertValidParam(z);
@@ -96,11 +99,29 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public SphericCoordinate doConvertToSphericCoordinate() throws CoordinateException {
-		double r = this.doGetCartesianDistance(new CartesianCoordinate(0,0,0));
-		if (r==0) return new SphericCoordinate(0,0,0);
+		double r = this.doGetCartesianDistance(getCartesianCoordinate(0,0,0));
+		if (r==0) return SphericCoordinate.getSphericCoordinate(0,0,0);
 		double l = Math.atan2(x,y);
 		double h = Math.asin(z/r);
-		return new SphericCoordinate(h,l,r);
+		return SphericCoordinate.getSphericCoordinate(h,l,r);
+	}
+
+	/**
+	 * @methodtype get
+	 */
+	public static CartesianCoordinate getCartesianCoordinate(double x2, double y2, double z2) throws CoordinateException {
+		String coord = x2+","+y2+","+z2;
+		CartesianCoordinate result = allCaCo.get(coord);
+		if (result == null) {
+			synchronized (allCaCo) {
+				result = allCaCo.get(coord);
+				if (result == null) {
+					result = new CartesianCoordinate(x2, y2, z2);
+					allCaCo.put(coord, result);
+				}
+			}
+		}
+		return result;
 	}
 
 }

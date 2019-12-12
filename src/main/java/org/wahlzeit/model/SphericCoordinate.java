@@ -10,12 +10,15 @@
 
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 public class SphericCoordinate extends AbstractCoordinate {
-	private double phi;   //latitude(south-nord direction) in radians
-	private double theta; //longitude(west-east direction) in radians 
-	private double radius;
+	private static HashMap<String, SphericCoordinate> allSpCo = new HashMap<String, SphericCoordinate>();
+	private final double phi;   //latitude(south-nord direction) in radians
+	private final double theta; //longitude(west-east direction) in radians 
+	private final double radius;
 	
-	public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
+	private SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
 		assertValidParam(phi, theta, radius);
 		this.phi = phi;
 		this.theta = theta;
@@ -47,7 +50,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * @methodtype assert
 	 */
-	protected void assertValidParam(Double phi, Double theta, Double radius) throws CoordinateException {
+	protected void assertValidParam(double phi, double theta, double radius) throws CoordinateException {
 		if (!validSphere(phi, theta, radius)) {
 			 throw new CoordinateException("Parameters value out of range", this);
 		 }
@@ -55,14 +58,14 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * @methodtype helper
 	 */
-	protected boolean validSphere(Double phi, Double theta, Double radius) {
+	protected boolean validSphere(double phi, double theta, double radius) {
 		 return (validAngle(phi, 2) && validAngle(theta, 1) && radius >= 0 );
 	}
 	
 	/**
 	 * @methodtype helper
 	 */
-	protected boolean validAngle(Double d, int factor) {
+	protected boolean validAngle(double d, int factor) {
 		 return d >= -Math.PI/factor && d <= Math.PI/factor;
 	}
 	
@@ -74,7 +77,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 		double x = this.radius*Math.cos(this.phi)*Math.sin(this.theta);
 		double y = this.radius*Math.cos(this.phi)*Math.cos(this.theta);
 		double z = this.radius*Math.sin(this.phi);
-		return new CartesianCoordinate(x, y, z);
+		return CartesianCoordinate.getCartesianCoordinate(x, y, z);
 	}
 
 	/**
@@ -83,5 +86,23 @@ public class SphericCoordinate extends AbstractCoordinate {
 	@Override
 	public SphericCoordinate doConvertToSphericCoordinate() {
 		return this;
+	}
+
+	/**
+	 * @methodtype get
+	 */
+	public static SphericCoordinate getSphericCoordinate(double phi2, double theta2, double radius2) throws CoordinateException {
+		String coord = phi2+","+theta2+","+radius2;
+		SphericCoordinate result = allSpCo.get(coord);
+		if (result == null) {
+			synchronized (allSpCo) {
+				result = allSpCo.get(coord);
+				if (result == null) {
+					result =  new SphericCoordinate(phi2, theta2, radius2);
+					allSpCo.put(coord, result);
+				}
+			}
+		}
+		return result;
 	}
 }
