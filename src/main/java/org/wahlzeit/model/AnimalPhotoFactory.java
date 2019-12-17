@@ -15,8 +15,21 @@ import java.util.logging.Logger;
 import org.wahlzeit.services.LogBuilder;
 
 /**
+ * 
  * An Abstract Factory for creating animal photos and related objects.
  */
+@PatternInstance(
+	patternName = "Abstract Factory",
+	participants = {"AbstractFactory", "ConcreteFactory"}
+)
+@PatternInstance(
+	patternName = "Factory Method",
+	participants = {"Creator", "ConcreteCreator"}
+)
+@PatternInstance(
+	patternName = "Singleton",
+	participants = {"Singleton"}
+)
 public class AnimalPhotoFactory extends PhotoFactory {
 
 	private static final Logger log = Logger.getLogger(AnimalPhotoFactory.class.getName());

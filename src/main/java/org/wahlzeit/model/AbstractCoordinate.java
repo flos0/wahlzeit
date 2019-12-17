@@ -10,6 +10,14 @@
 
 package org.wahlzeit.model;
 
+@PatternInstance(
+	patternName = "Flyweight",
+	participants = {"Flyweight"}
+)
+@PatternInstance(
+	patternName = "Template Method",
+	participants = {"AbstractClass"}
+)
 public abstract class AbstractCoordinate implements Coordinate{
 
 	/**
