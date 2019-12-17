@@ -12,6 +12,14 @@ package org.wahlzeit.model;
 
 import java.util.HashMap;
 
+@PatternInstance(
+	patternName = "Flyweight",
+	participants = {"ConcreteFlyweight", "FlyweightFactory"}
+)
+@PatternInstance(
+	patternName = "Template Methode",
+	participants = {"ConcreteClass"}
+)
 public class SphericCoordinate extends AbstractCoordinate {
 	private static HashMap<String, SphericCoordinate> allSpCo = new HashMap<String, SphericCoordinate>();
 	private final double phi;   //latitude(south-nord direction) in radians

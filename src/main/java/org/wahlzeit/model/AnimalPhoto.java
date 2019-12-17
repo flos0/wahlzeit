@@ -10,6 +10,14 @@
 
 package org.wahlzeit.model;
 
+@PatternInstance(
+	patternName = "Abstract Factory",
+	participants = {"AbstractProduct", "ConcreteProduct"}
+)
+@PatternInstance(
+	patternName = "Abstract Methode",
+	participants = {"Product", "ConcreteProduct"}
+)
 public class AnimalPhoto extends Photo {
 	private Animal animal;
 

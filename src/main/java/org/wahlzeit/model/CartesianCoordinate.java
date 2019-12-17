@@ -12,6 +12,14 @@ package org.wahlzeit.model;
 
 import java.util.HashMap;
 
+@PatternInstance(
+	patternName = "Flyweight",
+	participants = {"ConcreteFlyweight", "FlyweightFactory"}
+)
+@PatternInstance(
+	patternName = "Template Methode",
+	participants = {"ConcreteClass"}
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 	private static HashMap<String, CartesianCoordinate> allCaCo = new HashMap<String, CartesianCoordinate>();
 	public static final double epsilon = 0.0001;

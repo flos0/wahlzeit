@@ -20,6 +20,10 @@ import com.google.appengine.api.images.Image;
 /**
  * A photo manager provides access to and manages photos.
  */
+@PatternInstance(
+	patternName = "Singleton",
+	participants = {"Singleton"}
+)
 public class AnimalPhotoManager extends PhotoManager {
 
 	/**
