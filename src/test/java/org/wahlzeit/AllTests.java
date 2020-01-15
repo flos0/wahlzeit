@@ -3,7 +3,7 @@
  *
  * Version: 1.0
  *
- * Date 01.11.19
+ * Date 15.01.20
  * 
  * Copyright: AGPL-3.0
  */
@@ -22,7 +22,7 @@ import org.wahlzeit.utils.*;
 @RunWith(Suite.class)
 @SuiteClasses({ AccessRightsTest.class, CoordinateTest.class, FlagReasonTest.class, GenderTest.class, GuestTest.class,
 		PhotoFilterTest.class, TagsTest.class, UserStatusTest.class, ValueTest.class, TellFriendTest.class, AnimalPhotoManagerTest.class,
-		DatastoreAdapterTest.class, EmailService.class, LogBuilderTest.class, StringUtilTest.class, VersionTest.class})
+		AnimalTypeTest.class, DatastoreAdapterTest.class, EmailService.class, LogBuilderTest.class, StringUtilTest.class, VersionTest.class})
 
 public class AllTests {
 

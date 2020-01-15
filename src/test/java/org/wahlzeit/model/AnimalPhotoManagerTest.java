@@ -3,7 +3,7 @@
  *
  * Version: 1.0
  *
- * Date 07.11.19
+ * Date 15.01.20
  * 
  * Copyright: AGPL-3.0
  */
@@ -63,15 +63,16 @@ public class AnimalPhotoManagerTest {
 		byte[] f = Files.readAllBytes(Paths.get(new File(url.getPath(),"/leopard.jpg").getAbsolutePath()));
 		Image img = ImagesServiceFactory.makeImage(f);
 		AnimalPhoto phOriginal = apm.createPhoto("test", img);
-		phOriginal.setAnimal(new Animal("leopard", Animal.Type.Mammal));
+		AnimalType AT = new AnimalType("leopard");
+		phOriginal.setAnimal(new Animal(AT, Gender.MALE));
 		PhotoId id = phOriginal.getId();
 		AnimalPhoto phLoad = apm.getPhotoFromId(id);
 		AnimalPhoto phNew = apm.createPhoto("test2", img);
 				
 		assertTrue(phOriginal == phLoad);
 		assertTrue(phLoad.getId() == id);
-		assertTrue(phLoad.getAnimal().getName() == "leopard");
-		assertTrue(phLoad.getAnimal().getType() == Animal.Type.Mammal);
+		assertTrue(phLoad.getAnimal().getGender() == Gender.MALE);
+		assertTrue(phLoad.getAnimal().getType() == AT);
 		
 		assertFalse(phOriginal == phNew);
 		assertFalse(phOriginal.getId() == phNew.getId());

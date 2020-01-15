@@ -11,33 +11,31 @@
 package org.wahlzeit.model;
 
 public class Animal {
-	public enum Type { Mammal, Reptile, Bird, Fish, Insect, Other };
 	
-	private String name;
-	private Type type;
+	private AnimalType type;
+	private Gender gender;
 	
 	/**
 	 *
 	 */
-	public Animal(String name, Type type) {
-		if (name == null) throw new IllegalArgumentException("Animal's name shouldn't be empty");
-		if (name == "")   throw new IllegalArgumentException("Animal's name shouldn't be empty");
+	public Animal(AnimalType type, Gender gender) {
 		if (type == null) throw new IllegalArgumentException("Animal needs a type");
-		this.name = name;
+		if (gender == null) throw new IllegalArgumentException("Animal needs a gender");
 		this.type = type;
-	}
-
-	/**
-	 * @methodtype get
-	 */
-	public String getName() {
-		return name;
+		this.gender = gender;
 	}
 	
 	/**
 	 * @methodtype get
 	 */
-	public Type getType() {
+	public AnimalType getType() {
 		return type;
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Gender getGender() {
+		return gender;
 	}
 }
